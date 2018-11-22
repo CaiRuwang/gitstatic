@@ -3,8 +3,10 @@ __Author__ = "vans"
 __Date__ = '2018/06/26'
 
 import subprocess
+import ccbConstants as constants
 
 def commitInfo(filePath,sinceDate,endDate):
+    print filePath
     pNames = subprocess.Popen(
         "git log --format='%aN' | sort -u | while read name;do echo \"$name\t\";done",
         shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=filePath)
@@ -24,7 +26,7 @@ def commitInfo(filePath,sinceDate,endDate):
 
     pNames.wait()
 
-
+# 函数用来统计 提交人 新增代码行数，删除代码行数，以及总行数
 def commitLineInfo(name,filePath,sinceDate,endDate):
     commitInfo='';
     pLogs = subprocess.Popen(
@@ -39,6 +41,7 @@ def commitLineInfo(name,filePath,sinceDate,endDate):
     pLogs.wait()
     return commitInfo;
 
+# 函数用来统计 提交人提交代码次数
 def commitNumsInfo(name,filePath,sinceDate,endDate):
     commitInfo='';
     pLogs = subprocess.Popen(
@@ -56,4 +59,5 @@ def commitNumsInfo(name,filePath,sinceDate,endDate):
 
 
 if  __name__ == '__main__':
-    commitInfo("/Users/cairuwang/java/code/ccb_v5/ebs-ccbctmz-service",'2018-10-01','2018-11-21')
+    for filePath in  constants.filePaths():
+         commitInfo("/Users/cairuwang/java/code/ccb_v5/"+filePath,'2018-10-01','2018-11-21')
